@@ -8,6 +8,8 @@
 * JavaScript;
 * JSX;
 * API;
+* Node JS;
+* Express;
 
 **Ссылка на проект**
 
