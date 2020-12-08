@@ -1,3 +1,4 @@
+const { NODE_ENV, JWT_SECRET } = process.env;
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const { cryptHash } = require('../utils/errors');
@@ -16,7 +17,6 @@ module.exports.getUser = (req, res, next) => {
 };
 
 module.exports.getLoggedUser = (req, res, next) => {
-  console.log(req.user);
   User.findById(req.user)
     .orFail(new Error('notValidId'))
     .then((user) => res.send({ data: user }))
@@ -76,12 +76,12 @@ module.exports.login = (req, res, next) => {
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, 'super-strong-secret', { expiresIn: '7d' });
+      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
       res.cookie('jwt', token, {
         maxAge: 3600000,
         httpOnly: true,
         sameSite: true,
-        // secure: false,
+        secure: true,
       })
         .end();
     })
