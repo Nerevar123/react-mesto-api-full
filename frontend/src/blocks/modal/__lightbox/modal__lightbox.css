@@ -1,0 +1,6 @@
+.modal__lightbox {
+  max-width: 75vw;
+  max-height: 75vh;
+  position: relative;
+  margin: auto;
+}

@@ -1,0 +1,18 @@
+.button {
+  box-sizing: border-box;
+  cursor: pointer;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding: 0;
+  transition: 0.3s;
+}
+
+.button:hover {
+  border-color: rgba(255, 255, 255, 0.6);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.button:focus {
+  outline: none;
+}

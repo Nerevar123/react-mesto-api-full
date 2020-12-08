@@ -1,0 +1,8 @@
+@media screen and (max-width: 915px) {
+  .header__link_type_login {
+    grid-area: button;
+    justify-self: end;
+    margin-right: 30px;
+    margin-top: 34px;
+  }
+}

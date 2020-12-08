@@ -1,0 +1,8 @@
+.save-btn_theme_black {
+  background-color: #fff;
+  color: #000;
+}
+
+.save-btn_theme_black:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+}

@@ -1,0 +1,16 @@
+@import url(./__fields/login__fields.css);
+@import url(./__title/login__title.css);
+@import url(./__text/login__text.css);
+
+.login {
+  max-width: 358px;
+  margin: auto;
+  padding-top: 60px;
+  text-align: center;
+}
+
+@media screen and (max-width: 915px){
+  .login {
+    padding: 40px 30px;
+  }
+}

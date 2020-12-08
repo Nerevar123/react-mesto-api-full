@@ -1,0 +1,39 @@
+@import url(./__container/modal__container.css);
+@import url(./__title/modal__title.css);
+@import url(./__close-btn/modal__close-btn.css);
+@import url(./__figure/modal__figure.css);
+@import url(./__image/modal__image.css);
+@import url(./__caption/modal__caption.css);
+@import url(./__lightbox/modal__lightbox.css);
+@import url(./__icon/modal__icon.css);
+
+.modal {
+  transition: .3s ease-in-out;
+  background-color: rgb(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 10;
+  display: flex;
+}
+
+.modal-enter {
+  visibility: hidden;
+  opacity: 0;
+}
+.modal-enter-active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-exit {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-exit-active {
+  visibility: hidden;
+  opacity: 0;
+}

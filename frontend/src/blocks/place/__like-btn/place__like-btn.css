@@ -1,0 +1,11 @@
+.place__like-btn {
+  background: url(../../../images/place-like-btn.svg), white;
+  min-width: 22px;
+  height: 22px;
+  border: 0;
+  margin-bottom: 4px;
+}
+
+.place__like-btn:hover {
+  opacity: 0.6;
+}

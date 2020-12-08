@@ -1,0 +1,13 @@
+.label__input_theme_black {
+  background-color: #000;
+  border-bottom: 2px solid #ccc;
+  color: #fff;
+}
+
+.label__input_theme_black:-webkit-autofill,
+.label__input_theme_black:-webkit-autofill:hover,
+.label__input_theme_black:-webkit-autofill:focus,
+.label__input_theme_black:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: #fff !important;
+}

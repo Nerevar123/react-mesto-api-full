@@ -1,0 +1,15 @@
+.header__menu-button {
+  width: 24px;
+  height: 21px;
+  background: url(../../../images/header-burger.svg), transparent;
+  background-size: 100%;
+  border: 0;
+  grid-area: button;
+  justify-self: end;
+  margin-right: 28px;
+  margin-top: 28px;
+}
+
+.header__menu-button:hover {
+  opacity: .6;
+}

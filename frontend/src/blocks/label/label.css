@@ -1,0 +1,16 @@
+@import url(./__input/label__input.css);
+@import url(./__error/label__error.css);
+@import url(./__placeholder/label__placeholder.css);
+
+.label {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 36px;
+  position: relative;
+}
+
+@media screen and (max-width: 915px){
+  .label {
+    margin-bottom: 16px;
+  }
+}

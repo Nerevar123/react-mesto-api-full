@@ -1,0 +1,10 @@
+.label__error {
+  font-size: 12px;
+  line-height: 1.25;
+  color: #FF0000;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  opacity: 0;
+  transition: 0.3s;
+}

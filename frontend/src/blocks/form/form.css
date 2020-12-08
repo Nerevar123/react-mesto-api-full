@@ -1,0 +1,10 @@
+@import url(./__fields/form__fields.css);
+@import url(./__error/form__error.css);
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+  position: relative;
+}

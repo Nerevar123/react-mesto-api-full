@@ -1,0 +1,9 @@
+.place__header {
+  box-sizing: border-box;
+  padding: 24px 16px 28px 20px;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: default;
+}
