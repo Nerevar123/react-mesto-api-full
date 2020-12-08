@@ -25,6 +25,22 @@ app.use(cookieParser());
 
 app.use(requestLogger);
 
+const allowedCors = [
+  'https://ner.students.nomoreparties.space',
+  'http://ner.students.nomoreparties.space',
+  'localhost:3000',
+];
+
+app.use((req, res, next) => {
+  const { origin } = req.headers;
+
+  if (allowedCors.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+  }
+
+  next();
+});
+
 app.post('/signin', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required(),
