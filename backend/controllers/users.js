@@ -5,38 +5,22 @@ const { cryptHash } = require('../utils/errors');
 
 module.exports.getUsers = (req, res, next) => {
   User.find({})
-    .then((user) => res.send({ data: user }))
+    .then((users) => res.send(users))
     .catch(next);
 };
 
 module.exports.getUser = (req, res, next) => {
   User.findById(req.params.userId)
     .orFail(new Error('notValidId'))
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.send(user))
     .catch(next);
 };
 
 module.exports.getLoggedUser = (req, res, next) => {
   User.findById(req.user)
     .orFail(new Error('notValidId'))
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.send(user))
     .catch(next);
-};
-
-module.exports.createUser = (req, res, next) => {
-  const {
-    name, about, avatar, email, password,
-  } = req.body;
-
-  User.init()
-    .then(() => {
-      cryptHash(password)
-        .then((hash) => User.create({
-          name, about, avatar, email, password: hash,
-        }))
-        .then((user) => res.status(201).send({ data: user }))
-        .catch(next);
-    });
 };
 
 module.exports.updateUser = (req, res, next) => {
@@ -51,7 +35,7 @@ module.exports.updateUser = (req, res, next) => {
     },
   )
     .orFail(new Error('notValidId'))
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.send(user))
     .catch(next);
 };
 
@@ -67,8 +51,24 @@ module.exports.updateUserAvatar = (req, res, next) => {
     },
   )
     .orFail(new Error('notValidId'))
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.send(user))
     .catch(next);
+};
+
+module.exports.createUser = (req, res, next) => {
+  const {
+    name, about, avatar, email, password,
+  } = req.body;
+
+  User.init()
+    .then(() => {
+      cryptHash(password)
+        .then((hash) => User.create({
+          name, about, avatar, email, password: hash,
+        }))
+        .then((user) => res.status(201).send(user))
+        .catch(next);
+    });
 };
 
 module.exports.login = (req, res, next) => {
@@ -78,11 +78,10 @@ module.exports.login = (req, res, next) => {
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
       res.cookie('jwt', token, {
-        maxAge: 3600000,
-        httpOnly: true,
-        sameSite: true,
-      })
-        .end();
+        maxAge: 3600000 * 24 * 7,
+        // httpOnly: true,
+      });
+      res.status(201).send(user);
     })
     .catch(next);
 };

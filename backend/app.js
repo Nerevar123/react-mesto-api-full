@@ -1,4 +1,5 @@
 require('dotenv').config();
+const cors = require('cors');
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -9,7 +10,7 @@ const { createUser, login } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3001 } = process.env;
 const app = express();
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
@@ -19,29 +20,16 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   useUnifiedTopology: true,
 });
 
+app.use(cors({
+  origin: ['https://api.ner.students.nomoreparties.space', 'http://api.ner.students.nomoreparties.space', 'http://localhost:3000'],
+  credentials: true,
+}));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use(requestLogger);
-
-const allowedCors = [
-  'https://ner.students.nomoreparties.space',
-  'http://ner.students.nomoreparties.space',
-  'http://localhost:3000',
-];
-
-app.use((req, res, next) => {
-  const { origin } = req.headers;
-
-  if (allowedCors.includes(origin)) {
-    res.header('Access-Control-Allow-Origin', origin);
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
-  }
-
-  next();
-});
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({

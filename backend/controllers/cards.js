@@ -2,7 +2,7 @@ const Card = require('../models/card');
 
 module.exports.getCards = (req, res, next) => {
   Card.find({})
-    .then((user) => res.send({ data: user }))
+    .then((cards) => res.send(cards))
     .catch(next);
 };
 
@@ -10,14 +10,14 @@ module.exports.createCard = (req, res, next) => {
   const { name, link } = req.body;
 
   Card.create({ name, link, owner: req.user._id })
-    .then((card) => res.send({ data: card }))
+    .then((card) => res.send(card))
     .catch(next);
 };
 
 module.exports.deleteCard = (req, res, next) => {
   Card.findByIdAndRemove(req.params.cardId)
     .orFail(new Error('notValidId'))
-    .then((card) => res.send({ data: card }))
+    .then((card) => res.send(card))
     .catch(next);
 };
 
@@ -28,7 +28,7 @@ module.exports.putLike = (req, res, next) => {
     { new: true },
   )
     .orFail(new Error('notValidId'))
-    .then((card) => res.send({ data: card }))
+    .then((card) => res.send(card))
     .catch(next);
 };
 
@@ -39,6 +39,6 @@ module.exports.deleteLike = (req, res, next) => {
     { new: true },
   )
     .orFail(new Error('notValidId'))
-    .then((card) => res.send({ data: card }))
+    .then((card) => res.send(card))
     .catch(next);
 };

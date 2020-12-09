@@ -11,7 +11,8 @@
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.1",
-    "react-transition-group": "^4.4.1"
+    "react-transition-group": "^4.4.1",
+    "universal-cookie": "^4.0.4"
   },
   "scripts": {
     "start": "react-scripts start HOST=192.168.0.130",
@@ -19,7 +20,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "scp -r ./build/* nerevar123@84.201.158.178:/home/nerevar123/express-mesto/dist"
+    "deploy": "scp -r ./build/* nerevar123@84.201.158.178:/home/nerevar123/react-mesto-api-full/backend/dist"
   },
   "eslintConfig": {
     "extends": "react-app"

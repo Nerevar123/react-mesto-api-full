@@ -2,5 +2,11 @@
   font-size: 14px;
   line-height: 1.21;
   margin-top: 16px;
-  margin-bottom: 0;
+  margin-bottom: 16px;
+}
+
+@media screen and (max-width: 915px){
+  .login__text {
+    margin-bottom: 0;
+  }
 }

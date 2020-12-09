@@ -1,5 +1,6 @@
 import React from "react";
 import { Router, Route, Switch, useHistory, Redirect } from "react-router-dom";
+import Cookies from 'universal-cookie';
 import Register from "./Register";
 import Login from "./Login";
 import Header from "./Header";
@@ -12,15 +13,16 @@ import ConfirmPopup from "./ConfirmPopup";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
-import { api, authApi } from "../utils/api";
+import { api } from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import useFormWithValidation from "../hooks/useFormWithValidation";
 import { CSSTransition } from "react-transition-group";
 
 function App() {
   const history = useHistory();
+  const cookies = new Cookies();
   const validation = useFormWithValidation();
-  const [currentUser, setCurrentUser] = React.useState();
+  const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
   const [isEditProfilePopupOpen, setEditProfileClick] = React.useState(false);
   const [isAddPlacePopupOpen, setAddPlaceClick] = React.useState(false);
@@ -31,7 +33,6 @@ function App() {
   const [deletedCard, setDeletedCard] = React.useState({});
   const [isSaving, setIsSaving] = React.useState(false);
   const [isLoggedIn, setIsLoggedIn] = React.useState(null);
-  const [username, setUsername] = React.useState();
   const [isSuccess, setIsSuccess] = React.useState(false);
   const nodeRef = React.useRef(null);
 
@@ -43,7 +44,7 @@ function App() {
       })
       .catch((err) => console.log(err));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isLoggedIn]);
 
   function handleEditProfileClick() {
     setEditProfileClick(true);
@@ -68,7 +69,7 @@ function App() {
 
   function handleRegisterClick() {
     if (isSuccess) {
-      history.push("/sign-in");
+      history.push("/login");
     }
     closeAllPopups();
   }
@@ -80,32 +81,34 @@ function App() {
 
   function handleLogout() {
     setIsLoggedIn(false);
-    localStorage.removeItem("token");
+    cookies.remove('jwt');
     history.push("/login");
   }
 
   function handleAuthorize(user) {
-    authApi
+    api
       .authorize(user)
       .then((data) => {
-        if (data.token) {
-          localStorage.setItem("token", data.token);
+        // if (data.token) {
+          // localStorage.setItem("token", data.token);
+          // setCookie("jwt", data);
+          console.log(document.cookie)
+          console.log(data)
           handleLogin();
-          setUsername(user.email);
-        }
+          // }
       })
       .catch((err) => {
-        if (err === "Incorrect email address or password") {
-          validation.setErrors({ submit: "Неверный логин или пароль" });
-        } else {
-          validation.setErrors({ submit: err });
-        }
+        // if (err === "Incorrect email address or password") {
+        //   validation.setErrors({ submit: "Неверный логин или пароль" });
+        // } else {
+        //   validation.setErrors({ submit: err });
+        // }
         console.log(err);
       });
   }
 
   function handleRegister(user) {
-    authApi
+    api
       .register(user)
       .then(() => {
         setIsSuccess(true);
@@ -119,22 +122,16 @@ function App() {
   }
 
   function handleTokenCheck() {
-    if (localStorage.getItem("token")) {
-      const token = localStorage.getItem("token");
-      authApi
-        .checkToken(token)
-        .then((res) => {
+    const jwt = cookies.get('jwt');
+    if (jwt) {
           handleLogin();
-          setUsername(res.data.email);
-        })
-        .catch((err) => console.log(err));
     } else {
       setIsLoggedIn(false);
     }
   }
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    const isLiked = card.likes.some((i) => i === currentUser._id);
     api
       .changeLikeCardStatus(card._id, !isLiked)
       .then((newCard) => {
@@ -175,10 +172,11 @@ function App() {
   }
 
   function handleAddPlaceSubmit(card) {
+
     setIsSaving(true);
     api
       .addCard(card)
-      .then((card) => setCards([card, ...cards]))
+      .then((card) => {console.log(card); setCards([card, ...cards])})
       .catch((err) => console.log(err))
       .finally(() => closeAllPopups());
   }
@@ -216,7 +214,7 @@ function App() {
               <>
                 <Header
                   button="isLogged"
-                  username={username}
+                  username={currentUser.email}
                   onLogout={handleLogout}
                 />
                 <Main
@@ -243,14 +241,14 @@ function App() {
                 />
               </>
             </Route>
-            <Route exact path="/sign-in">
+            <Route exact path="/login">
               <>
                 <Header button="register" />
                 <Login onAuthorize={handleAuthorize} validation={validation} />
               </>
             </Route>
             <Route>
-              {isLoggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
+              {isLoggedIn ? <Redirect to="/" /> : <Redirect to="/login" />}
             </Route>
           </Switch>
           <CSSTransition
