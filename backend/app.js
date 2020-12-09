@@ -10,7 +10,7 @@ const { createUser, login } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3001 } = process.env;
 const app = express();
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
@@ -21,7 +21,7 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 });
 
 app.use(cors({
-  origin: ['https://api.ner.students.nomoreparties.space', 'http://api.ner.students.nomoreparties.space', 'http://localhost:3000'],
+  origin: ['https://ner.students.nomoreparties.space', 'http://ner.students.nomoreparties.space', 'http://localhost:3000', 'http://127.0.0.1:3000'],
   credentials: true,
 }));
 
