@@ -6,7 +6,9 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const { celebrate, Joi, errors } = require('celebrate');
 const { ERROR_CODE_404, errorMessage404, checkError } = require('./utils/errors');
-const { createUser, login } = require('./controllers/users');
+const {
+  createUser, login, logout, checkCookies,
+} = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
@@ -31,6 +33,7 @@ app.use(cookieParser());
 
 app.use(requestLogger);
 
+app.get('/signin', checkCookies);
 app.post('/signin', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required(),
@@ -48,6 +51,8 @@ app.use(auth);
 
 app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
+
+app.use('/logout', logout);
 
 app.use('*', (req, res) => {
   res.status(ERROR_CODE_404).send({ message: errorMessage404 });

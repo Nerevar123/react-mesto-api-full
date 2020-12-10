@@ -47,7 +47,7 @@ function Main(props) {
       </section>
       <section className="places">
         <ul className="places__list">
-          {props.cards.map((card) => (
+          {props.cards.slice().reverse().map((card) => (
             <Card
               card={card}
               key={card._id}

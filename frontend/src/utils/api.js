@@ -21,14 +21,14 @@ class Api {
   getUserInfo() {
     return fetch(`${this._baseUrl}/users/me`, {
       headers: this._headers,
-      credentials: 'include',
+      credentials: "include",
     }).then(this._checkError);
   }
 
   getInitCards() {
     return fetch(`${this._baseUrl}/cards`, {
       headers: this._headers,
-      credentials: 'include',
+      credentials: "include",
     }).then(this._checkError);
   }
 
@@ -36,7 +36,7 @@ class Api {
     return fetch(`${this._baseUrl}/users/me`, {
       method: "PATCH",
       headers: this._headers,
-      credentials: 'include',
+      credentials: "include",
       body: JSON.stringify(info),
     }).then(this._checkError);
   }
@@ -45,7 +45,7 @@ class Api {
     return fetch(`${this._baseUrl}/cards`, {
       method: "POST",
       headers: this._headers,
-      credentials: 'include',
+      credentials: "include",
       body: JSON.stringify(card),
     }).then(this._checkError);
   }
@@ -54,7 +54,7 @@ class Api {
     return fetch(`${this._baseUrl}/cards/${id}`, {
       method: "DELETE",
       headers: this._headers,
-      credentials: 'include',
+      credentials: "include",
     }).then(this._checkError);
   }
 
@@ -63,13 +63,13 @@ class Api {
       return fetch(`${this._baseUrl}/cards/${id}/likes`, {
         method: "PUT",
         headers: this._headers,
-        credentials: 'include',
+        credentials: "include",
       }).then(this._checkError);
     } else {
       return fetch(`${this._baseUrl}/cards/${id}/likes`, {
         method: "DELETE",
         headers: this._headers,
-        credentials: 'include',
+        credentials: "include",
       }).then(this._checkError);
     }
   }
@@ -78,7 +78,7 @@ class Api {
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: "PATCH",
       headers: this._headers,
-      credentials: 'include',
+      credentials: "include",
       body: JSON.stringify(avatar),
     }).then(this._checkError);
   }
@@ -87,31 +87,33 @@ class Api {
     return fetch(`${this._baseUrl}/signup`, {
       method: "POST",
       headers: this._headers,
-      credentials: 'include',
+      credentials: "include",
       body: JSON.stringify(user),
-    })
-    // .then(this._checkError);
+    }).then(this._checkError);
   }
 
   authorize(user) {
     return fetch(`${this._baseUrl}/signin`, {
       method: "POST",
       headers: this._headers,
-      credentials: 'include',
+      credentials: "include",
       body: JSON.stringify(user),
-    })
-    // .then(this._checkError);
+    }).then(this._checkError);
   }
 
-//   checkToken(token) {
-//     return fetch(`${this._baseUrl}/users/me`, {
-//       method: "GET",
-//       headers: {
-//         "Content-Type": "application/json",
-//         Authorization: `Bearer ${token}`,
-//       },
-//     }).then(this._checkError);
-//   }
+  logout() {
+    return fetch(`${this._baseUrl}/logout`, {
+      headers: this._headers,
+      credentials: "include",
+    }).then(this._checkError);
+  }
+
+  checkCookies() {
+    return fetch(`${this._baseUrl}/signin`, {
+      headers: this._headers,
+      credentials: "include",
+    }).then(this._checkError);
+  }
 }
 
 export const api = new Api(apiOptions);

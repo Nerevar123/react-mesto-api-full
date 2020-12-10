@@ -79,13 +79,34 @@ module.exports.login = (req, res, next) => {
       const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
       res.cookie('jwt', token, {
         maxAge: 3600000 * 24 * 7,
-        // domain: undefined,
-        // Path: '/',
         sameSite: 'none',
         secure: true,
         httpOnly: true,
       });
-      res.status(201).send(user);
+      res.send({ jwt: token });
     })
     .catch(next);
+};
+
+module.exports.logout = (req, res, next) => {
+  try {
+    res.clearCookie('jwt', {
+      sameSite: 'none',
+      secure: true,
+      httpOnly: true,
+    });
+    res.send({ message: 'Logout Successful' });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports.checkCookies = (req, res, next) => {
+  const token = req.cookies.jwt;
+  try {
+    jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
+    res.send({ jwt: token });
+  } catch (err) {
+    next(err);
+  }
 };

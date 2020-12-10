@@ -1,6 +1,5 @@
 import React from "react";
 import { Router, Route, Switch, useHistory, Redirect } from "react-router-dom";
-import Cookies from 'universal-cookie';
 import Register from "./Register";
 import Login from "./Login";
 import Header from "./Header";
@@ -20,7 +19,6 @@ import { CSSTransition } from "react-transition-group";
 
 function App() {
   const history = useHistory();
-  const cookies = new Cookies();
   const validation = useFormWithValidation();
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
@@ -79,30 +77,30 @@ function App() {
     history.push("/");
   }
 
-  function handleLogout() {
-    setIsLoggedIn(false);
-    cookies.remove('jwt');
-    history.push("/login");
+  function handleTokenCheck() {
+    api
+      .checkCookies()
+      .then(() => {
+        handleLogin();
+      })
+      .catch((err) => {
+        setIsLoggedIn(false);
+        console.log(err);
+      });
   }
 
   function handleAuthorize(user) {
     api
       .authorize(user)
-      .then((data) => {
-        // if (data.token) {
-          // localStorage.setItem("token", data.token);
-          // setCookie("jwt", data);
-          console.log(document.cookie)
-          console.log(data)
-          handleLogin();
-          // }
+      .then(() => {
+        handleLogin();
       })
       .catch((err) => {
-        // if (err === "Incorrect email address or password") {
-        //   validation.setErrors({ submit: "Неверный логин или пароль" });
-        // } else {
-        //   validation.setErrors({ submit: err });
-        // }
+        if (typeof err === "object") {
+          validation.setErrors({ submit: "Ошибка сервера" });
+        } else {
+          validation.setErrors({ submit: err });
+        }
         console.log(err);
       });
   }
@@ -116,18 +114,25 @@ function App() {
       })
       .catch((err) => {
         setRegisterClick(true);
-        validation.setErrors({ submit: err });
+        if (typeof err === "object") {
+          validation.setErrors({ submit: "Ошибка сервера" });
+        } else {
+          validation.setErrors({ submit: err });
+        }
         console.log(err);
       });
   }
 
-  function handleTokenCheck() {
-    const jwt = cookies.get('jwt');
-    if (jwt) {
-          handleLogin();
-    } else {
-      setIsLoggedIn(false);
-    }
+  function handleLogout() {
+    api
+      .logout()
+      .then(() => {
+        setIsLoggedIn(false);
+        history.push("/login");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function handleCardLike(card) {
@@ -172,11 +177,10 @@ function App() {
   }
 
   function handleAddPlaceSubmit(card) {
-
     setIsSaving(true);
     api
       .addCard(card)
-      .then((card) => {console.log(card); setCards([card, ...cards])})
+      .then((card) => setCards([...cards, card]))
       .catch((err) => console.log(err))
       .finally(() => closeAllPopups());
   }
