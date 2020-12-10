@@ -101,6 +101,7 @@ module.exports.logout = (req, res, next) => {
   }
 };
 
+// TODO Обьеденить с auth?
 module.exports.checkCookies = (req, res, next) => {
   const token = req.cookies.jwt;
   if (!token) throw new Error('JsonWebTokenError');

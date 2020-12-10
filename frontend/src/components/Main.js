@@ -5,7 +5,7 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 function Main(props) {
   const currentUser = React.useContext(CurrentUserContext);
 
-  if (props.cards.length === 0) {
+  if (!props.cards) {
     return (
       <section className="profile">
         <h1 className="profile__loading">Загрузка...</h1>
