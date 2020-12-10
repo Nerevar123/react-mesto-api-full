@@ -35,7 +35,7 @@ function App() {
   const nodeRef = React.useRef(null);
 
   React.useEffect(() => {
-    Promise.all([api.getInitCards(), api.getUserInfo(), handleTokenCheck()])
+    Promise.all([api.getInitCards(), api.getUserInfo(), handleCookiesCheck()])
       .then(([cards, user]) => {
         setCurrentUser(user);
         setCards(cards);
@@ -77,7 +77,7 @@ function App() {
     history.push("/");
   }
 
-  function handleTokenCheck() {
+  function handleCookiesCheck() {
     api
       .checkCookies()
       .then(() => {
@@ -128,6 +128,7 @@ function App() {
       .logout()
       .then(() => {
         setIsLoggedIn(false);
+        setCurrentUser({});
         history.push("/login");
       })
       .catch((err) => {

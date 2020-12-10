@@ -19,7 +19,7 @@ const checkError = (err, res) => {
     res.status(ERROR_CODE_400).send({ message: errorMessage400, details: err.message });
   } else if (err.message === 'notValidLogin') {
     res.status(ERROR_CODE_401).send({ message: errorMessage401 });
-  } else if (err.name === 'JsonWebTokenError') {
+  } else if (err.message === 'JsonWebTokenError' || err.name === 'JsonWebTokenError') {
     res.status(ERROR_CODE_401).send({ message: errorMessageWithToken401 });
   } else if (err.name === 'MongoError' && (err.message.startsWith('E11000'))) {
     res.status(ERROR_CODE_401).send({ message: errorMessageWithMongo401 });

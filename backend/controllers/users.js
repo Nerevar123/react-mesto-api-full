@@ -103,6 +103,7 @@ module.exports.logout = (req, res, next) => {
 
 module.exports.checkCookies = (req, res, next) => {
   const token = req.cookies.jwt;
+  if (!token) throw new Error('JsonWebTokenError');
   try {
     jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
     res.send({ jwt: token });

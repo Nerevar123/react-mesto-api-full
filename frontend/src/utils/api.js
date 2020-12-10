@@ -109,7 +109,7 @@ class Api {
   }
 
   checkCookies() {
-    return fetch(`${this._baseUrl}/signin`, {
+    return fetch(`${this._baseUrl}/check`, {
       headers: this._headers,
       credentials: "include",
     }).then(this._checkError);

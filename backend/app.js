@@ -33,7 +33,6 @@ app.use(cookieParser());
 
 app.use(requestLogger);
 
-app.get('/signin', checkCookies);
 app.post('/signin', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required(),
@@ -49,6 +48,7 @@ app.post('/signup', celebrate({
 
 app.use(auth);
 
+app.get('/check', checkCookies);
 app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
 
@@ -58,6 +58,7 @@ app.use('*', (req, res) => {
   res.status(ERROR_CODE_404).send({ message: errorMessage404 });
 });
 
+// TODO: очистка логов
 app.use(errorLogger);
 
 app.use(errors());
