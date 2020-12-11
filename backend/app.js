@@ -42,15 +42,15 @@ app.get('/crash-test', () => {
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({
-    email: Joi.string().required(),
-    password: Joi.string().min(4).required(),
+    email: Joi.string().email().required(),
+    password: Joi.string().min(4).required().pattern(/^\S+$/),
   }),
 }), login);
 app.post('/signup', celebrate({
   body: Joi.object().keys({
-    email: Joi.string().required(),
-    password: Joi.string().min(4).required(),
-  }),
+    email: Joi.string().email().required(),
+    password: Joi.string().min(4).required().pattern(/^\S+$/),
+  }).unknown(true),
 }), createUser);
 
 app.use(auth);

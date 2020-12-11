@@ -16,7 +16,7 @@ module.exports.createCard = (req, res, next) => {
 
 module.exports.deleteCard = (req, res, next) => {
   Card.findById(req.params.cardId)
-    .orFail(new Error('notValidId'))
+    .orFail(new Error('cardNotFound'))
     .then((data) => {
       // eslint-disable-next-line eqeqeq
       if (data.owner != req.user._id) {
@@ -34,7 +34,7 @@ module.exports.putLike = (req, res, next) => {
     { $addToSet: { likes: req.user._id } },
     { new: true },
   )
-    .orFail(new Error('notValidId'))
+    .orFail(new Error('cardNotFound'))
     .then((card) => res.send(card))
     .catch(next);
 };
@@ -45,7 +45,7 @@ module.exports.deleteLike = (req, res, next) => {
     { $pull: { likes: req.user._id } },
     { new: true },
   )
-    .orFail(new Error('notValidId'))
+    .orFail(new Error('cardNotFound'))
     .then((card) => res.send(card))
     .catch(next);
 };

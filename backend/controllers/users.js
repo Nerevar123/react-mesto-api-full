@@ -11,14 +11,14 @@ module.exports.getUsers = (req, res, next) => {
 
 module.exports.getUser = (req, res, next) => {
   User.findById(req.params.userId)
-    .orFail(new Error('notValidId'))
+    .orFail(new Error('userNotFound'))
     .then((user) => res.send(user))
     .catch(next);
 };
 
 module.exports.getLoggedUser = (req, res, next) => {
   User.findById(req.user)
-    .orFail(new Error('notValidId'))
+    .orFail(new Error('userNotFound'))
     .then((user) => res.send(user))
     .catch(next);
 };
@@ -34,7 +34,7 @@ module.exports.updateUser = (req, res, next) => {
       runValidators: true,
     },
   )
-    .orFail(new Error('notValidId'))
+    .orFail(new Error('userNotFound'))
     .then((user) => res.send(user))
     .catch(next);
 };
@@ -50,7 +50,7 @@ module.exports.updateUserAvatar = (req, res, next) => {
       runValidators: true,
     },
   )
-    .orFail(new Error('notValidId'))
+    .orFail(new Error('userNotFound'))
     .then((user) => res.send(user))
     .catch(next);
 };
@@ -66,7 +66,7 @@ module.exports.createUser = (req, res, next) => {
         .then((hash) => User.create({
           name, about, avatar, email, password: hash,
         }))
-        .then((user) => res.status(201).send(user))
+        .then(() => res.status(201).send())
         .catch(next);
     });
 };

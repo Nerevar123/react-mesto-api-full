@@ -38,6 +38,10 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 4,
     select: false,
+    validate: {
+      validator: (v) => /^\S+$/.test(v),
+      message: 'Недопустимый символ в пароле',
+    },
   },
 });
 
