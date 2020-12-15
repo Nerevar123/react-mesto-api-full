@@ -5,6 +5,7 @@
 
 @media screen and (max-width: 915px){
   .header__name {
+    font-size: 16px;
     margin-right: 0;
     margin-bottom: 18px;
   }

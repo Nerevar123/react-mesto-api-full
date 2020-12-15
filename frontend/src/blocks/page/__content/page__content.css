@@ -4,4 +4,12 @@
   width: 100%;
   min-height: 100vh;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (max-width: 915px){
+  .page__content {
+    min-height: 90vh;
+  }
 }

@@ -6,6 +6,7 @@
 
 @media screen and (max-width: 915px){
   .login__fields {
-    margin-bottom: 172px;
+    margin-bottom: 0px;
+    /* flex-grow: 1; */
   }
 }

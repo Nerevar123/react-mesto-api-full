@@ -1,16 +1,24 @@
 const winston = require('winston');
 const expressWinston = require('express-winston');
+require('winston-daily-rotate-file');
+
+const transport = (name) => new winston.transports.DailyRotateFile({
+  filename: name,
+  dirname: './/logs//',
+  maxSize: '20m',
+  maxFiles: '14d',
+});
 
 const requestLogger = expressWinston.logger({
   transports: [
-    new winston.transports.File({ filename: 'request.log' }),
+    transport('request.log'),
   ],
   format: winston.format.json(),
 });
 
 const errorLogger = expressWinston.errorLogger({
   transports: [
-    new winston.transports.File({ filename: 'error.log' }),
+    transport('error.log'),
   ],
   format: winston.format.json(),
 });

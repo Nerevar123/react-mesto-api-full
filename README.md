@@ -18,6 +18,7 @@ https://ner.students.nomoreparties.space/
 **Ссылка на API**
 
 https://api.ner.students.nomoreparties.space/
+
 IP: 84.201.158.178
 
 **Change-log**
