@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv-flow').config();
 const cors = require('cors');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -33,13 +33,6 @@ app.use(cookieParser());
 
 app.use(requestLogger);
 
-// TODO Удалить
-app.get('/crash-test', () => {
-  setTimeout(() => {
-    throw new Error('Сервер сейчас упадёт');
-  }, 0);
-});
-
 app.post('/signin', celebrate({
   body: Joi.object().keys({
     email: Joi.string().email().required(),
@@ -65,7 +58,6 @@ app.use('*', (req, res) => {
   res.status(ERROR_CODE_404).send({ message: errorMessage404 });
 });
 
-// TODO: очистка логов
 app.use(errorLogger);
 
 app.use(errors());

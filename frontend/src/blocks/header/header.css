@@ -2,6 +2,7 @@
 @import url(./__text-container/header__text-container.css);
 @import url(./__name/header__name.css);
 @import url(./__menu-button/header__menu-button.css);
+@import url(./__link/header__link.css);
 @import url(./__link/_type/_login/header__link_type_login.css);
 @import url(./__link/_type/_logout/header__link_type_logout.css);
 

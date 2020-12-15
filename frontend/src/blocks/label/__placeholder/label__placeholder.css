@@ -23,6 +23,5 @@
   }
   .label__input:focus + .label__placeholder, .label__placeholder_is-fixed {
     font-size: 10px;
-    transform: translateY(-150%) scale(1);
   }
 }
