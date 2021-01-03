@@ -19,7 +19,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "scp -r ./build/* nerevar123@84.201.158.178:/home/nerevar123/react-mesto-api-full/backend/dist"
+    "deployy": "scp -r ./build/* nerevar123@84.201.158.178:/home/nerevar123/react-mesto-api-full/backend/dist",
+    "deploy": "scp -P 49178 -r ./build/* root@ovz1.nerevar123.px7zm.vps.myjino.ru:/root/react-mesto-api-full/backend/dist"
   },
   "eslintConfig": {
     "extends": "react-app"

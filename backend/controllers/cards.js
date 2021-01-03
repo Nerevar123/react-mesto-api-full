@@ -28,10 +28,10 @@ module.exports.deleteCard = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.putLike = (req, res, next) => {
+const updateLike = (req, res, next, method) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
-    { $addToSet: { likes: req.user._id } },
+    { [method]: { likes: req.user._id } },
     { new: true },
   )
     .orFail(new Error('cardNotFound'))
@@ -39,13 +39,6 @@ module.exports.putLike = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.deleteLike = (req, res, next) => {
-  Card.findByIdAndUpdate(
-    req.params.cardId,
-    { $pull: { likes: req.user._id } },
-    { new: true },
-  )
-    .orFail(new Error('cardNotFound'))
-    .then((card) => res.send(card))
-    .catch(next);
-};
+module.exports.putLike = (req, res, next) => updateLike(req, res, next, '$addToSet');
+
+module.exports.deleteLike = (req, res, next) => updateLike(req, res, next, '$pull');
