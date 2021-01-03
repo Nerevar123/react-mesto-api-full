@@ -69,7 +69,7 @@ module.exports.createUser = (req, res, next) => {
         .then((hash) => User.create({
           name, about, avatar, email, password: hash,
         }))
-        .then(() => res.status(201).send())
+        .then(() => res.status(201).send({ message: 'Вы успешно зарегистрированы' }))
         .catch(next);
     });
 };
@@ -86,7 +86,7 @@ module.exports.login = (req, res, next) => {
         secure: yn(COOKIES_SECURE),
         httpOnly: yn(COOKIES_SECURE),
       });
-      res.send({ jwt: token });
+      res.send({ message: 'Вы успешно вошли в аккаунт' });
     })
     .catch(next);
 };
