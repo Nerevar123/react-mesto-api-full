@@ -1,29 +1,19 @@
-# Проект "Mesto Russia" #
+# Mesto Project #
 
-Проект "Mesto Russia" - это лендинг, созданный для закрепления навыков верстки и программирования.
+This is a single page responsive website using CSS, HTML and JavaScript,following the BEM methodology. This was a project from a series of briefs, and uses a BEM CSS nested file structure. This repository contains the front-end project on React with added authorizations and register functions and the back-end project built using Express, Nodejs and MongoDB.
 
 **Технологии**
 
 * React;
-* JavaScript;
 * JSX;
-* API;
+* Mongo DB;
 * Node JS;
 * Express;
 
-**Ссылка на проект**
+**Link to the project**
 
-https://ner.students.nomoreparties.space/
+https://mesto.ner.works/
 
-**Ссылка на API**
+**Link to API**
 
-https://api.ner.students.nomoreparties.space/
-
-IP: 84.201.158.178
-
-**Change-log**
-
-_v1.0_
-
-Первая версия сайта.
-
+https://api.mesto.ner.works/

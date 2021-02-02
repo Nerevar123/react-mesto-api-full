@@ -23,7 +23,7 @@ function PopupWithForm({
           isSaving={isSaving}
           buttonText={buttonText}
           children={children}
-        ></Form>
+        />
         <button
           className="modal__close-btn button"
           type="button"

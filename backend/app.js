@@ -23,7 +23,6 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 });
 
 app.use(cors({
-  // origin: ['https://ner.students.nomoreparties.space', 'http://ner.students.nomoreparties.space', 'http://localhost:3000', 'http://127.0.0.1:3000'],
   origin: ['https://mesto.ner.works', 'http://mesto.ner.works', 'http://localhost:3000', 'http://127.0.0.1:3000'],
   credentials: true,
 }));
