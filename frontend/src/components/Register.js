@@ -6,6 +6,7 @@ import Label from "./Label";
 import InfoTooltip from "./InfoTooltip";
 import ClosablePopup from "./hocs/ClosablePopup";
 import { CSSTransition } from "react-transition-group";
+import { TranslationContext } from "../contexts/TranslationContext";
 
 function Register({
   validation,
@@ -17,6 +18,7 @@ function Register({
 }) {
   const nodeRef = React.useRef(null);
   const { values, errors, handleChange, isValid, resetForm } = validation;
+  const translation = React.useContext(TranslationContext);
 
   React.useEffect(() => {
     resetForm();
@@ -32,7 +34,7 @@ function Register({
 
   return (
     <section className="login">
-      <h2 className="login__title">Регистрация</h2>
+      <h2 className="login__title">{translation.registerButton}</h2>
       <Form
         name="nickname"
         onSubmit={handleSubmit}
@@ -40,7 +42,7 @@ function Register({
         isSaving={isSaving}
         isBlack
         errors={errors}
-        buttonText="Зарегистрироваться"
+        buttonText={translation.register}
         children={
           <fieldset className="login__fields">
             <Label
@@ -59,7 +61,7 @@ function Register({
               onChange={handleChange}
               errors={errors}
               name="password"
-              placeholder="Пароль"
+              placeholder={translation.password}
               isBlack
               type="password"
               required
@@ -78,9 +80,9 @@ function Register({
         }
       ></Form>
       <p className="login__text">
-        Уже зарегистрированы?{" "}
+      {translation.alreadyRegister}{" "}
         <Link to="/sign-in" className="login__link link">
-          Войти
+        {translation.loginButton}
         </Link>
       </p>
       <CSSTransition
@@ -94,7 +96,7 @@ function Register({
           <InfoTooltip
             isSuccess={isSuccess}
             onClose={onClose}
-            successText="Вы успешно зарегистрировались!"
+            successText={translation.successText}
             refs={nodeRef}
           />
         </ClosablePopup>

@@ -1,9 +1,11 @@
 import React from "react";
 import PopupWithForm from "./PopupWithForm";
 import Label from "./Label";
+import { TranslationContext } from "../contexts/TranslationContext";
 
 function AddPlacePopup({ onClose, onAddPlace, isSaving, validation, refs }) {
   const { values, handleChange, errors, isValid, resetForm } = validation;
+  const translation = React.useContext(TranslationContext);
 
   React.useEffect(() => {
     resetForm();
@@ -23,9 +25,9 @@ function AddPlacePopup({ onClose, onAddPlace, isSaving, validation, refs }) {
 
   return (
     <PopupWithForm
-      title="Новое место"
+      title={translation.newPlace}
       name="place"
-      buttonText="Создать"
+      buttonText={translation.createButton}
       onClose={onClose}
       onSubmit={handleSubmit}
       isSaving={isSaving}
@@ -38,7 +40,7 @@ function AddPlacePopup({ onClose, onAddPlace, isSaving, validation, refs }) {
             onChange={handleChange}
             errors={errors}
             name="name"
-            placeholder="Название"
+            placeholder={translation.cardName}
             type="text"
             required
             minLength="2"
@@ -49,7 +51,7 @@ function AddPlacePopup({ onClose, onAddPlace, isSaving, validation, refs }) {
             onChange={handleChange}
             errors={errors}
             name="link"
-            placeholder="Ссылка на картинку"
+            placeholder={translation.cardLink}
             type="url"
             required
           />

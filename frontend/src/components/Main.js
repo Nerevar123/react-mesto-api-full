@@ -1,14 +1,16 @@
 import React from "react";
 import Card from "./Card";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import { TranslationContext } from "../contexts/TranslationContext";
 
 function Main(props) {
   const currentUser = React.useContext(CurrentUserContext);
+  const translation = React.useContext(TranslationContext);
 
   if (!props.cards) {
     return (
       <section className="profile">
-        <h1 className="profile__loading">Загрузка...</h1>
+        <h1 className="profile__loading">{translation.loading}</h1>
       </section>
     );
   }

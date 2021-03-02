@@ -1,7 +1,10 @@
 import React from "react";
 import PopupWithForm from "./PopupWithForm";
+import { TranslationContext } from "../contexts/TranslationContext";
 
 function ConfirmPopup({ onClose, isSaving, onConfirm, refs }) {
+  const translation = React.useContext(TranslationContext);
+
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -10,7 +13,7 @@ function ConfirmPopup({ onClose, isSaving, onConfirm, refs }) {
 
   return (
     <PopupWithForm
-      title="Вы уверены?"
+      title={translation.confirmText}
       name="confirm"
       buttonText="Да"
       onClose={onClose}

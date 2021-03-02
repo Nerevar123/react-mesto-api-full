@@ -1,8 +1,10 @@
 import React from "react";
-import success from "../images/login-success.png";
-import fail from "../images/login-fail.png";
+import success from "../images/login-success.svg";
+import fail from "../images/login-fail.svg";
+import { TranslationContext } from "../contexts/TranslationContext";
 
 function InfoTooltip({ onClose, isSuccess, successText, refs }) {
+  const translation = React.useContext(TranslationContext);
   return (
     <section className="modal modal_type_info" ref={refs}>
       <div className="modal__container">
@@ -15,7 +17,7 @@ function InfoTooltip({ onClose, isSuccess, successText, refs }) {
           <>
             <img className="modal__icon" src={fail} alt="result" />
             <h3 className="modal__title">
-              Что-то пошло не так! Попробуйте ещё раз.
+              {translation.unsuccessText}
             </h3>
           </>
         )}

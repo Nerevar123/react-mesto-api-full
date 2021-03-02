@@ -2,9 +2,12 @@ import React from "react";
 import cn from "classnames";
 import Form from "./Form";
 import Label from "./Label";
+import { TranslationContext } from "../contexts/TranslationContext";
 
 function Login({ validation, isSaving, onAuthorize }) {
   const { values, errors, handleChange, isValid, resetForm } = validation;
+  const translation = React.useContext(TranslationContext);
+
 
   React.useEffect(() => {
     resetForm();
@@ -20,7 +23,7 @@ function Login({ validation, isSaving, onAuthorize }) {
 
   return (
     <section className="login">
-      <h2 className="login__title">Вход</h2>
+      <h2 className="login__title">{translation.login}</h2>
       <Form
         name="nickname"
         onSubmit={handleSubmit}
@@ -28,7 +31,7 @@ function Login({ validation, isSaving, onAuthorize }) {
         isSaving={isSaving}
         isBlack={true}
         errors={errors}
-        buttonText="Войти"
+        buttonText={translation.loginButton}
         children={
           <fieldset className="login__fields">
             <Label
@@ -47,7 +50,7 @@ function Login({ validation, isSaving, onAuthorize }) {
               onChange={handleChange}
               errors={errors}
               name="password"
-              placeholder="Пароль"
+              placeholder={translation.password}
               isBlack
               type="password"
               required

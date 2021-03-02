@@ -2,6 +2,7 @@ import React from "react";
 import PopupWithForm from "./PopupWithForm";
 import Label from "./Label";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import { TranslationContext } from "../contexts/TranslationContext";
 
 function EditProfilePopup({
   onClose,
@@ -20,6 +21,7 @@ function EditProfilePopup({
   } = validation;
 
   const currentUser = React.useContext(CurrentUserContext);
+  const translation = React.useContext(TranslationContext);
 
   React.useEffect(() => {
     if (currentUser) {
@@ -46,9 +48,9 @@ function EditProfilePopup({
 
   return (
     <PopupWithForm
-      title="Редактировать профиль"
+      title={translation.updateBio}
       name="title"
-      buttonText="Сохранить"
+      buttonText={translation.saveBio}
       onClose={onClose}
       onSubmit={handleSubmit}
       isSaving={isSaving}
@@ -61,7 +63,7 @@ function EditProfilePopup({
             onChange={handleChange}
             errors={errors}
             name="nickname"
-            placeholder="Имя"
+            placeholder={translation.nameInput}
             type="text"
             required
             minLength="2"
@@ -73,7 +75,7 @@ function EditProfilePopup({
             onChange={handleChange}
             errors={errors}
             name="description"
-            placeholder="О себе"
+            placeholder={translation.aboutInput}
             type="text"
             required
             minLength="2"

@@ -14,6 +14,10 @@ import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
 import { api } from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import {
+  TranslationContext,
+  translations,
+} from "../contexts/TranslationContext";
 import useFormWithValidation from "../hooks/useFormWithValidation";
 import { CSSTransition } from "react-transition-group";
 
@@ -32,9 +36,13 @@ function App() {
   const [isSaving, setIsSaving] = React.useState(false);
   const [isLoggedIn, setIsLoggedIn] = React.useState(null);
   const [isSuccess, setIsSuccess] = React.useState(false);
+  const [lang, setLang] = React.useState("en");
   const nodeRef = React.useRef(null);
 
   React.useEffect(() => {
+    const lang = localStorage.getItem("lang");
+    if (lang) setLang(lang);
+
     Promise.all([api.getInitCards(), api.getUserInfo(), handleCookiesCheck()])
       .then(([cards, user]) => {
         setCurrentUser(user);
@@ -97,7 +105,7 @@ function App() {
       })
       .catch((err) => {
         if (typeof err === "object") {
-          validation.setErrors({ submit: "Ошибка сервера" });
+          validation.setErrors({ submit: "Internal Server Error" });
         } else {
           validation.setErrors({ submit: err });
         }
@@ -115,7 +123,7 @@ function App() {
       .catch((err) => {
         setRegisterClick(true);
         if (typeof err === "object") {
-          validation.setErrors({ submit: "Ошибка сервера" });
+          validation.setErrors({ submit: "Internal Server Error" });
         } else {
           validation.setErrors({ submit: err });
         }
@@ -200,11 +208,16 @@ function App() {
     }, 500);
   }
 
+  function handleLangChange(lang) {
+    setLang(lang);
+    localStorage.setItem("lang", lang);
+  }
+
   if (isLoggedIn === null) {
     return (
       <>
         <section className="profile">
-          <h1 className="profile__loading">Загрузка...</h1>
+          <h1 className="profile__loading">Loading...</h1>
         </section>
       </>
     );
@@ -212,134 +225,141 @@ function App() {
 
   return (
     <div className="page__content">
-      <CurrentUserContext.Provider value={currentUser}>
-        <Router history={history} basename="/">
-          <Switch>
-            <ProtectedRoute exact path="/" loggedIn={isLoggedIn}>
-              <>
-                <Header
-                  button="isLogged"
-                  username={currentUser.email}
-                  onLogout={handleLogout}
-                />
-                <Main
-                  onEditProfile={handleEditProfileClick}
-                  onAddPlace={handleAddPlaceClick}
-                  onEditAvatar={handleEditAvatarClick}
-                  onCardClick={handleCardClick}
-                  cards={cards}
-                  onCardLike={handleCardLike}
-                  onDeleteClick={handleDeleteClick}
-                />
-                <Footer />
-              </>
-            </ProtectedRoute>
-            <Route exact path="/sign-up">
-              <>
-                <Header button="login" />
-                <Register
+      <TranslationContext.Provider value={translations[lang]}>
+        <CurrentUserContext.Provider value={currentUser}>
+          <Router history={history} basename="/">
+            <Switch>
+              <ProtectedRoute exact path="/" loggedIn={isLoggedIn}>
+                <>
+                  <Header
+                    button="isLogged"
+                    username={currentUser.email}
+                    onLogout={handleLogout}
+                    lang={lang}
+                    setLang={handleLangChange}
+                  />
+                  <Main
+                    onEditProfile={handleEditProfileClick}
+                    onAddPlace={handleAddPlaceClick}
+                    onEditAvatar={handleEditAvatarClick}
+                    onCardClick={handleCardClick}
+                    cards={cards}
+                    onCardLike={handleCardLike}
+                    onDeleteClick={handleDeleteClick}
+                  />
+                  <Footer />
+                </>
+              </ProtectedRoute>
+              <Route exact path="/sign-up">
+                <>
+                  <Header button="login" lang={lang} setLang={handleLangChange} />
+                  <Register
+                    validation={validation}
+                    onRegister={handleRegister}
+                    isOpen={isRegisterPopupOpen}
+                    onClose={handleRegisterClick}
+                    isSuccess={isSuccess}
+                  />
+                </>
+              </Route>
+              <Route exact path="/login">
+                <>
+                  <Header button="register" lang={lang} setLang={handleLangChange} />
+                  <Login
+                    onAuthorize={handleAuthorize}
+                    validation={validation}
+                  />
+                </>
+              </Route>
+              <Route>
+                {isLoggedIn ? <Redirect to="/" /> : <Redirect to="/login" />}
+              </Route>
+            </Switch>
+            <CSSTransition
+              nodeRef={nodeRef}
+              in={isEditProfilePopupOpen}
+              timeout={300}
+              classNames="modal"
+              unmountOnExit
+            >
+              <ClosablePopup>
+                <EditProfilePopup
+                  onClose={closeAllPopups}
+                  onUpdateUser={handleUpdateUser}
+                  isSaving={isSaving}
                   validation={validation}
-                  onRegister={handleRegister}
-                  isOpen={isRegisterPopupOpen}
-                  onClose={handleRegisterClick}
-                  isSuccess={isSuccess}
+                  refs={nodeRef}
                 />
-              </>
-            </Route>
-            <Route exact path="/login">
-              <>
-                <Header button="register" />
-                <Login onAuthorize={handleAuthorize} validation={validation} />
-              </>
-            </Route>
-            <Route>
-              {isLoggedIn ? <Redirect to="/" /> : <Redirect to="/login" />}
-            </Route>
-          </Switch>
-          <CSSTransition
-            nodeRef={nodeRef}
-            in={isEditProfilePopupOpen}
-            timeout={300}
-            classNames="modal"
-            unmountOnExit
-          >
-            <ClosablePopup>
-              <EditProfilePopup
-                onClose={closeAllPopups}
-                onUpdateUser={handleUpdateUser}
-                isSaving={isSaving}
-                validation={validation}
-                refs={nodeRef}
-              />
-            </ClosablePopup>
-          </CSSTransition>
-          <CSSTransition
-            nodeRef={nodeRef}
-            in={isAddPlacePopupOpen}
-            timeout={300}
-            classNames="modal"
-            unmountOnExit
-          >
-            <ClosablePopup>
-              <AddPlacePopup
-                onClose={closeAllPopups}
-                onAddPlace={handleAddPlaceSubmit}
-                isSaving={isSaving}
-                validation={validation}
-                refs={nodeRef}
-              />
-            </ClosablePopup>
-          </CSSTransition>
-          <CSSTransition
-            nodeRef={nodeRef}
-            in={isEditAvatarPopupOpen}
-            timeout={300}
-            classNames="modal"
-            unmountOnExit
-          >
-            <ClosablePopup>
-              <EditAvatarPopup
-                onClose={closeAllPopups}
-                onUpdateAvatar={handleUpdateAvatar}
-                isSaving={isSaving}
-                validation={validation}
-                refs={nodeRef}
-              />
-            </ClosablePopup>
-          </CSSTransition>
-          <CSSTransition
-            nodeRef={nodeRef}
-            in={Boolean(selectedCard.link)}
-            timeout={300}
-            classNames="modal"
-            unmountOnExit
-          >
-            <ClosablePopup>
-              <ImagePopup
-                card={selectedCard}
-                onClose={closeAllPopups}
-                refs={nodeRef}
-              />
-            </ClosablePopup>
-          </CSSTransition>
-          <CSSTransition
-            nodeRef={nodeRef}
-            in={isConfirmPopupOpen}
-            timeout={300}
-            classNames="modal"
-            unmountOnExit
-          >
-            <ClosablePopup>
-              <ConfirmPopup
-                onClose={closeAllPopups}
-                onConfirm={handleCardDelete}
-                isSaving={isSaving}
-                refs={nodeRef}
-              />
-            </ClosablePopup>
-          </CSSTransition>
-        </Router>
-      </CurrentUserContext.Provider>
+              </ClosablePopup>
+            </CSSTransition>
+            <CSSTransition
+              nodeRef={nodeRef}
+              in={isAddPlacePopupOpen}
+              timeout={300}
+              classNames="modal"
+              unmountOnExit
+            >
+              <ClosablePopup>
+                <AddPlacePopup
+                  onClose={closeAllPopups}
+                  onAddPlace={handleAddPlaceSubmit}
+                  isSaving={isSaving}
+                  validation={validation}
+                  refs={nodeRef}
+                />
+              </ClosablePopup>
+            </CSSTransition>
+            <CSSTransition
+              nodeRef={nodeRef}
+              in={isEditAvatarPopupOpen}
+              timeout={300}
+              classNames="modal"
+              unmountOnExit
+            >
+              <ClosablePopup>
+                <EditAvatarPopup
+                  onClose={closeAllPopups}
+                  onUpdateAvatar={handleUpdateAvatar}
+                  isSaving={isSaving}
+                  validation={validation}
+                  refs={nodeRef}
+                />
+              </ClosablePopup>
+            </CSSTransition>
+            <CSSTransition
+              nodeRef={nodeRef}
+              in={Boolean(selectedCard.link)}
+              timeout={300}
+              classNames="modal"
+              unmountOnExit
+            >
+              <ClosablePopup>
+                <ImagePopup
+                  card={selectedCard}
+                  onClose={closeAllPopups}
+                  refs={nodeRef}
+                />
+              </ClosablePopup>
+            </CSSTransition>
+            <CSSTransition
+              nodeRef={nodeRef}
+              in={isConfirmPopupOpen}
+              timeout={300}
+              classNames="modal"
+              unmountOnExit
+            >
+              <ClosablePopup>
+                <ConfirmPopup
+                  onClose={closeAllPopups}
+                  onConfirm={handleCardDelete}
+                  isSaving={isSaving}
+                  refs={nodeRef}
+                />
+              </ClosablePopup>
+            </CSSTransition>
+          </Router>
+        </CurrentUserContext.Provider>
+      </TranslationContext.Provider>
     </div>
   );
 }

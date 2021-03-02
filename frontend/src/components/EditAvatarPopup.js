@@ -1,6 +1,7 @@
 import React from "react";
 import PopupWithForm from "./PopupWithForm";
 import Label from "./Label";
+import { TranslationContext } from "../contexts/TranslationContext";
 
 function EditAvatarPopup({
   onClose,
@@ -10,6 +11,7 @@ function EditAvatarPopup({
   refs,
 }) {
   const { values, handleChange, errors, isValid, resetForm } = validation;
+  const translation = React.useContext(TranslationContext);
 
   React.useEffect(() => {
     resetForm();
@@ -28,9 +30,9 @@ function EditAvatarPopup({
 
   return (
     <PopupWithForm
-      title="Обновить аватар"
+      title={translation.updateAvatar}
       name="avatar"
-      buttonText="Обновить"
+      buttonText={translation.saveAvatar}
       onClose={onClose}
       onSubmit={handleSubmit}
       isSaving={isSaving}
@@ -42,7 +44,7 @@ function EditAvatarPopup({
           onChange={handleChange}
           errors={errors}
           name="avatar"
-          placeholder="Ссылка на аватар"
+          placeholder={translation.cardLink}
           type="url"
           required
         />
