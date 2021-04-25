@@ -29,18 +29,24 @@ function Header({ button, username, onLogout, lang, setLang }) {
       <img src={logo} alt="Mesto логотип" className="header__logo" />
       <div className="header__info">
         <div
-          class={`lang ${isMenuOpen ? "open" : ""}`}
+          className={`lang ${isMenuOpen ? "open" : ""}`}
           onClick={handleMenuClick}
         >
-          <div class="lang__trigger">
+          <div className="lang__trigger">
             <span>{lang === "en" ? "Eng" : "Ru"}</span>
-            <div class="lang__arrow"></div>
+            <div className="lang__arrow"></div>
           </div>
-          <div class="lang__options">
-            <span class="lang__option" onClick={() => handleLangClick("en")}>
+          <div className="lang__options">
+            <span
+              className="lang__option"
+              onClick={() => handleLangClick("en")}
+            >
               English
             </span>
-            <span class="lang__option" onClick={() => handleLangClick("ru")}>
+            <span
+              className="lang__option"
+              onClick={() => handleLangClick("ru")}
+            >
               Русский
             </span>
           </div>
@@ -84,31 +90,31 @@ function Header({ button, username, onLogout, lang, setLang }) {
         )}
       </div>
       {size.width < 915 && (
-          <>
-            {button === "isLogged" && (
-              <button
-                className={cn("header__menu-button", "button", {
-                  "header__menu-button_clicked": isButtonClicked,
-                })}
-                onClick={handleButtonClick}
-              />
-            )}
-            <div
-              className={cn("header__text-container", {
-                "header__text-container_closed": !isButtonClicked,
+        <>
+          {button === "isLogged" && (
+            <button
+              className={cn("header__menu-button", "button", {
+                "header__menu-button_clicked": isButtonClicked,
               })}
+              onClick={handleButtonClick}
+            />
+          )}
+          <div
+            className={cn("header__text-container", {
+              "header__text-container_closed": !isButtonClicked,
+            })}
+          >
+            <span className="header__name">{username}</span>
+            <Link
+              to="/sign-in"
+              className="header__link header__link_type_logout link"
+              onClick={onLogout}
             >
-              <span className="header__name">{username}</span>
-              <Link
-                to="/sign-in"
-                className="header__link header__link_type_logout link"
-                onClick={onLogout}
-              >
-                {translation.logout}
-              </Link>
-            </div>
-          </>
-        )}
+              {translation.logout}
+            </Link>
+          </div>
+        </>
+      )}
     </header>
   );
 }
