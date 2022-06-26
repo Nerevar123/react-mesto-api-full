@@ -36,7 +36,7 @@
     "express-winston": "^4.0.5",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.13",
-    "validator": "^13.5.1",
+    "validator": "^13.7.0",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.0",
     "yn": "^4.0.0"
