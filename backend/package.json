@@ -19,26 +19,26 @@
   "homepage": "https://github.com/Nerevar123/express-mesto#readme",
   "devDependencies": {
     "cross-env": "^7.0.3",
-    "eslint": "^7.12.1",
-    "eslint-config-airbnb-base": "^14.2.0",
-    "eslint-plugin-import": "^2.22.1",
-    "nodemon": "^2.0.6"
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.26.0",
+    "nodemon": "^2.0.18"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "body-parser": "^1.19.0",
+    "body-parser": "^1.20.0",
     "celebrate": "^13.0.4",
-    "cookie-parser": "^1.4.5",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
+    "dotenv": "^8.6.0",
     "dotenv-flow": "^3.2.0",
-    "express": "^4.17.1",
-    "express-winston": "^4.0.5",
+    "express": "^4.18.1",
+    "express-winston": "^4.2.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.10.13",
+    "mongoose": "^5.13.14",
     "validator": "^13.7.0",
-    "winston": "^3.3.3",
-    "winston-daily-rotate-file": "^4.5.0",
+    "winston": "^3.8.0",
+    "winston-daily-rotate-file": "^4.7.1",
     "yn": "^4.0.0"
   }
 }
